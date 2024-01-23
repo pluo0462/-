@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:星图"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <Style TargetType="Button" x:Key="StarButton">
+        <!--<Style TargetType="Button" x:Key="StarButton">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -15,11 +15,123 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>-->
 
+
+
+        <Style TargetType="Button" x:Key="StarButton">
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition Height="36"/>
+                                <RowDefinition Height="12"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Background>
+                                <SolidColorBrush Opacity="0"/>
+                            </Grid.Background>
+                            <!--<Image Source="src\36px-Pc_a_star.png" Grid.Row="1"/>-->
+                            <ContentPresenter Grid.Row="1"/>
+                            <TextBlock Grid.Row="2" FontSize="10" Foreground="white" FontWeight="Bold" Text="{Binding Path=Name}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
-        <Style TargetType="Line" x:Key="FTLLine">
-            <Setter Property="Stroke" Value="Blue"/>
-            <Setter Property="StrokeThickness" Value="2"/>
+        <!--<Style BasedOn="{StaticResource StarButton}" TargetType="Button" x:Key="ClassA">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="src\36px-Pc_a_star.png"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource StarButton}" TargetType="Button" x:Key="ClassB">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="src\36px-Pc_b_star.png" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource StarButton}" TargetType="Button" x:Key="ClassF">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="src\36px-Pc_f_star.png"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource StarButton}" TargetType="Button" x:Key="ClassG">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="src\36px-Pc_g_star.png"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource StarButton}" TargetType="Button" x:Key="ClassK">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="src\36px-Pc_k_star.png"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource StarButton}" TargetType="Button" x:Key="ClassM">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="src\36px-Pc_m_star.png"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource StarButton}" TargetType="Button" x:Key="ClassMRG">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="src\36px-Pc_m_giant_star.png"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource StarButton}" TargetType="Button" x:Key="ClassTBD">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="src\36px-Pc_t_star.png"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource StarButton}" TargetType="Button" x:Key="BlackHole">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="src\36px-Pc_black_hole.png" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource StarButton}" TargetType="Button" x:Key="Neutron">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="src\36px-Pc_neutron_star.png"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource StarButton}" TargetType="Button" x:Key="Pulsar">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="src\36px-Pc_pulsar.png"/>
+                </Setter.Value>
+            </Setter>
+        </Style>-->        
+
+        <Style TargetType="Line" x:Key="FTL">
+            <Setter Property="StrokeThickness" Value="1"/>
+            <Setter Property="StrokeDashArray" Value="5,3"/>
+        </Style>
+        <Style BasedOn="{StaticResource FTL}" TargetType="Line" x:Key="HyperLane">
+            <Setter Property="Stroke" Value="DeepSkyBlue"/>
+        </Style>
+        <Style BasedOn="{StaticResource FTL}" TargetType="Line" x:Key="JumpGate">
+            <Setter Property="Stroke" Value="Orange"/>
+        </Style>
+        <Style BasedOn="{StaticResource FTL}" TargetType="Line" x:Key="PsychicSpace">
+            <Setter Property="Stroke" Value="Purple"/>
         </Style>
     </Application.Resources>
 </Application>

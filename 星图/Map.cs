@@ -6,22 +6,52 @@ using System.Threading.Tasks;
 
 namespace 星图
 {
+    /// <summary>
+    /// Global variables for map display. 
+    /// </summary>
     internal static class Map
     {
-        public static List<int> ButtonSize { get; } = [40, 30, 20];
-        public static List<int> LineLength { get; } = [180, 90, 30];
+
+        private const double _basicStarHabitableChance = 0.05;
+        public enum StarType
+        {
+            ClassA,
+            ClassB,
+            ClassF,
+            ClassG,
+            ClassK,
+            ClassM,
+            ClassMRG,
+            ClassTBD,
+            BlackHole,
+            Neutron,
+            Pulsar,
+        }
+
+        public static List<double> StarTypeChance { get; } = [10, 10, 15, 30, 20, 20, 10, 0.8, 0.4, 0.4];
+
+
+        public static List<double> StarHabitableChance { get; } = 
+            [
+                0.6 * _basicStarHabitableChance, 
+                0.6 * _basicStarHabitableChance, 
+                _basicStarHabitableChance, 
+                _basicStarHabitableChance, 
+                _basicStarHabitableChance, 
+                0.4 * _basicStarHabitableChance,
+                0.1 * _basicStarHabitableChance,
+                0.4 * _basicStarHabitableChance,
+                0,
+                0,
+                0
+            ];
+
 
         public static List<Star> Stars { get; } = [];
 
-        public static void ConnectStar(Star A, Star B)
-        {
-            A.Neighbors.Add(B);
-            B.Neighbors.Add(A);
-        }
-
         public static void Clean()
         {
-            foreach (Star s  in Stars)
+            foreach (Star s in Stars)
             {
                 s.Visited = false;
             }

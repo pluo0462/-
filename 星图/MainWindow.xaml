@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:星图"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1000" Width="1600" WindowStyle="None">
+        Title="MainWindow" Height="1440" Width="2560" WindowStyle="ToolWindow">
     <Window.Background>
-        <ImageBrush ImageSource="G:\code\source\repos\星图\Art\Background.jpg"/>
+        <ImageBrush ImageSource="src\Background3.jpg"/>
     </Window.Background>
     <Grid>
         <!--<Button Width="100" Height="100" Name="MyButton">
@@ -50,7 +50,6 @@
                 </EventTrigger>
             </Button.Triggers>
         </Button>-->
-        <Canvas Name="DisplayedMap" Height="1000" Width="1600"/>
-        
+        <Canvas Name="DisplayedMap"/>
     </Grid>
 </Window>

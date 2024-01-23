@@ -16,8 +16,8 @@ namespace 星图
             PsychicSpace = 2,
         }
         private PathTypes _type;
-        //private double _basicRequiredTime;
         private int _difficulty;
+        private bool _explored;
 
         public PathTypes Type
         {
@@ -34,21 +34,6 @@ namespace 星图
                 }
             }
         }
-        //public double BasicRequiredTime
-        //{
-        //    get
-        //    {
-        //        return _basicRequiredTime;
-        //    }
-        //    set
-        //    {
-        //        if (_basicRequiredTime != value)
-        //        {
-        //            _basicRequiredTime = value;
-        //            OnPropertyChanged(nameof(BasicRequiredTime));
-        //        }
-        //    }
-        //}
 
         public int Difficulty
         {
@@ -66,7 +51,23 @@ namespace 星图
             }
         }
 
-        Path()
+        public bool Explored
+        {
+            get
+            {
+                return _explored;
+            }
+            set
+            {
+                if (_explored != value)
+                {
+                    _explored = value;
+                    OnPropertyChanged(nameof(Explored));
+                }
+            }
+        }
+
+        public Path()
         {
             var random = new Random();
             double p = random.NextDouble();
@@ -98,7 +99,7 @@ namespace 星图
             }
         }
 
-        Path(PathTypes pathType)
+        public Path(PathTypes pathType)
         {
             switch (pathType)
             {
