@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,7 +11,8 @@ using System.Windows.Navigation;
 
 namespace 星图
 {
-    internal class Star : INotifyPropertyChanged
+    [DataContract] 
+    internal class Star : INotifyPropertyChanged, IExtensibleDataObject
     {
         #region Fields
         private string _name = string.Empty;
@@ -27,6 +29,7 @@ namespace 星图
         private double _taxRate = 0;
         private bool _habitable = false;
         #endregion
+        [DataMember]
         public string Name 
         {
             get
@@ -43,6 +46,8 @@ namespace 星图
             }
         
         }
+
+        [DataMember]
         public string Description 
         {
             get
@@ -56,7 +61,9 @@ namespace 星图
                     OnPropertyChanged(nameof(Description));
                 }
             }
-        } 
+        }
+
+        [DataMember]
         public Map.StarType StarType
         {
             get 
@@ -73,6 +80,7 @@ namespace 星图
             }
         }
 
+        [DataMember]
         public bool Explored
         {
             get
@@ -291,7 +299,7 @@ namespace 星图
         }
         #endregion
 
-        public Dictionary<Star, Path> Neighbors { get; } = [];
+        public Dictionary<Star, Lane> Neighbors { get; } = [];
 
         // The Coordinate property should be used in map drawing only!
         public System.Windows.Point Coordinate { get; set; }
@@ -316,81 +324,97 @@ namespace 星图
             Name = name;
             Description = description;
             Explored = true;
-            Map.Stars.Add(this);
         }
         public Star(string name, string description, Map.StarType starType)
         {
             Name = name;
             Description = description;
             StarType = starType;
-            Explored = true;
-            Map.Stars.Add(this);
+            Explored = false;
         }
 
-        public void Explore()
-        {
-            // Decide the star type.
-            Random p = new Random();
-            double roll = p.NextDouble() * Map.StarTypeChance.Sum();
-            double basic = 0;
-            for (int i = 0; i < Map.StarTypeChance.Count; i++)
-            {
-                basic += Map.StarTypeChance[i];
-                if (roll <= basic)
-                {
-                    this.StarType = (Map.StarType) i;
-                    break;
-                }
-            }
+        //public void Explore()
+        //{
+        //    // Decide the star type.
+        //    Random p = new Random();
+        //    double roll = p.NextDouble() * Map.StarTypeChance.Sum();
+        //    double basic = 0;
+        //    for (int i = 0; i < Map.StarTypeChance.Count; i++)
+        //    {
+        //        basic += Map.StarTypeChance[i];
+        //        if (roll <= basic)
+        //        {
+        //            this.StarType = (Map.StarType) i;
+        //            break;
+        //        }
+        //    }
 
-            // Decide whether it is habitable
-            roll = p.NextDouble();
-            if (roll <= Map.StarHabitableChance[(int) this.StarType])
-            {
-                this.Habitable = true;
-            }
+        //    // Decide whether it is habitable
+        //    roll = p.NextDouble();
+        //    if (roll <= Map.StarHabitableChance[(int) this.StarType])
+        //    {
+        //        this.Habitable = true;
+        //    }
 
-            // Decide the number of neighbor
-            roll = p.NextDouble() * 100;
-            int neighborCount = 1;
-            if (roll <= 40)
-            {
-                neighborCount = 2;
-            }
-            else if (roll <= 70)
-            {
-                neighborCount = 3;
-            }
-            else if (roll <= 90)
-            {
-                neighborCount = 4;
-            }
-            for (int i = 1; i < neighborCount; i++)
-            {
-                Star star = new Star();
-                Star.ConnectStar(this, star);
-            }
+        //    // Decide the number of neighbor
+        //    roll = p.NextDouble() * 100;
+        //    int neighborCount = 1;
+        //    if (roll <= 40)
+        //    {
+        //        neighborCount = 2;
+        //    }
+        //    else if (roll <= 70)
+        //    {
+        //        neighborCount = 3;
+        //    }
+        //    else if (roll <= 90)
+        //    {
+        //        neighborCount = 4;
+        //    }
+        //    for (int i = 1; i < neighborCount; i++)
+        //    {
+        //        Star star = new Star();
+        //        Star.ConnectStar(this, star);
+        //    }
 
-        }
+        //}
 
-        public static void ConnectStar(Star A, Star B)
-        {
-            Path path = new Path();
-            A.Neighbors.TryAdd(B, path);
-            B.Neighbors.TryAdd(A, path);
-        }
+        //public static void ConnectStar(Star A, Star B)
+        //{
+        //    Lane lane = new Lane();
+        //    Map.Lanes.Add(lane);
+        //    A.Neighbors.TryAdd(B, lane);
+        //    B.Neighbors.TryAdd(A, lane);
+        //}
 
-        public static void ConnectStar(Star A, Star B, Path.PathTypes pathType)
-        {
-            Path path = new Path(pathType);
-            A.Neighbors.TryAdd(B, path);
-            B.Neighbors.TryAdd(A, path);
-        }
+        //public static void ConnectStar(Star A, Star B, Map.LaneType laneType)
+        //{
+        //    Lane lane = new Lane(laneType);
+        //    Map.Lanes.Add(lane);
+        //    A.Neighbors.TryAdd(B, lane);
+        //    B.Neighbors.TryAdd(A, lane);
+        //}
 
+        #region INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
+        #region IExtensibleDataObject Implementation
+        private ExtensionDataObject? extensionDataObjectValue;
+        public ExtensionDataObject? ExtensionData
+        {
+            get
+            {
+                return extensionDataObjectValue;
+            }
+            set
+            {
+                extensionDataObjectValue = value;
+            }
+        }
+        #endregion
     }
 }

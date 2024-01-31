@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="save\star.xml" />
     <None Remove="src\Background.jpg" />
     <None Remove="src\Background2.jpg" />
     <None Remove="src\Background3.jpg" />
@@ -68,6 +69,10 @@
     <Content Include="src\ClassTBD.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="save\" />
   </ItemGroup>
 	
 </Project>

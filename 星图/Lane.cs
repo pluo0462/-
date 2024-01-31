@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace 星图
 {
-    internal class Path : INotifyPropertyChanged
+    [DataContract]
+    internal class Lane : INotifyPropertyChanged, IExtensibleDataObject
     {
-        public enum PathTypes
-        {
-            HyperLane = 0,
-            JumpGate = 1,
-            PsychicSpace = 2,
-        }
-        private PathTypes _type;
+        #region Fields
+        private Map.LaneType _type;
         private int _difficulty;
+        private string _endpoint1 = string.Empty;
+        private string _endpoint2 = string.Empty;
         private bool _explored;
-
-        public PathTypes Type
+        #endregion
+        [DataMember]
+        public Map.LaneType Type
         {
             get
             {
@@ -35,6 +35,7 @@ namespace 星图
             }
         }
 
+        [DataMember]
         public int Difficulty
         {
             get 
@@ -51,6 +52,7 @@ namespace 星图
             }
         }
 
+        [DataMember]
         public bool Explored
         {
             get
@@ -67,43 +69,76 @@ namespace 星图
             }
         }
 
-        public Path()
+        [DataMember]
+        public string Endpoint1
+        {
+            get
+            {
+                return _endpoint1;
+            }
+            set
+            {
+                if (_endpoint1 != value)
+                {
+                    _endpoint1 = value;
+                    OnPropertyChanged(nameof(Endpoint1));
+                }
+            }
+        }
+        [DataMember]
+        public string Endpoint2
+        {
+            get
+            {
+                return _endpoint2;
+            }
+            set
+            {
+                if (_endpoint2 != value)
+                {
+                    _endpoint2 = value;
+                    OnPropertyChanged(nameof(Endpoint2));
+                }
+            }
+        }
+
+        public Lane()
         {
             var random = new Random();
             double p = random.NextDouble();
 
             if (p < 0.36)
             {
-                Type = PathTypes.HyperLane;
+                Type = Map.LaneType.HyperLane;
                 Difficulty = 1;
             }
             else if (p < 0.63)
             {
-                Type = PathTypes.HyperLane;
+                Type = Map.LaneType.HyperLane;
                 Difficulty = 2;
             }
             else if (p < 0.81)
             {
-                Type = PathTypes.HyperLane;
+                Type = Map.LaneType.HyperLane;
                 Difficulty = 3;
             }
             else if (p < 0.9)
             {
-                Type = PathTypes.HyperLane;
+                Type = Map.LaneType.HyperLane;
                 Difficulty = 4;
             }
             else
             {
-                Type = PathTypes.JumpGate;
+                Type = Map.LaneType.JumpGate;
                 Difficulty = 0;
             }
         }
 
-        public Path(PathTypes pathType)
+        public Lane(Map.LaneType pathType)
         {
             switch (pathType)
             {
-                case PathTypes.HyperLane:
+                case Map.LaneType.HyperLane:
                     Type = pathType;
                     var random = new Random();
                     double p = random.NextDouble();
@@ -125,11 +160,11 @@ namespace 星图
                     }
                     break;
 
-                case PathTypes.JumpGate:
+                case Map.LaneType.JumpGate:
                     Type = pathType;
                     Difficulty = 0;
                     break;
-                case PathTypes.PsychicSpace:
+                case Map.LaneType.PsychicSpace:
                     Type = pathType;
                     Difficulty = 0;
                     break;
@@ -137,11 +172,26 @@ namespace 星图
                     throw new NotImplementedException("Invalid path type.");
             }
         }
-
+        #region INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
+        #region IExtensibleDataObject Implementation
+        private ExtensionDataObject? extensionDataObjectValue;
+        public ExtensionDataObject? ExtensionData
+        {
+            get
+            {
+                return extensionDataObjectValue;
+            }
+            set
+            {
+                extensionDataObjectValue = value;
+            }
+        }
+        #endregion
     }
 }

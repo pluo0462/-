@@ -1,0 +1,32 @@
+﻿<Window x:Class="星图.StartMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:星图"
+        mc:Ignorable="d"
+        Title="StartMenu" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="1">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="10"/>
+                </Style>
+            </StackPanel.Resources>
+            <TextBlock x:Name="MapName_textb" Margin="10" HorizontalAlignment="Center" Text="No Map Yet"/>
+            <!--<TextBlock x:Name="MapSave_textb" Margin="10" HorizontalAlignment="Center"/>-->
+            <Button x:Name="CreateMap_btn" Click="CreateMap_btn_Click">Create Map</Button>
+            <Button x:Name="LoadMap_btn" Click="LoadMap_btn_Click">Load Map</Button>
+            <Button x:Name="EditMap_btn"  Click="EditMap_btn_Click" IsEnabled="False">Edit Map</Button>
+            <Button x:Name="SaveMap_btn" Click="SaveMap_btn_Click" IsEnabled="False">Save Map</Button>
+            <Button x:Name="DisplayMap_btn" Click="DisplayMap_btn_Click" IsEnabled="False">Display Map</Button>
+            <Button x:Name="CreateInteractiveMap_btn" Click="CreateInteractiveMap_btn_Click" IsEnabled="False">Create Interactive Map</Button>
+        </StackPanel>
+    </Grid>
+</Window>
