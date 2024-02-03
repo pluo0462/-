@@ -15,10 +15,10 @@
         <StackPanel Grid.Column="1">
             <StackPanel.Resources>
                 <Style TargetType="HeaderedContentControl">
-                    <Setter Property="Margin" Value="2"/>
+                    <!--<Setter Property="Margin" Value="2"/>-->
                     <Setter Property="BorderBrush" Value="Black"/>
                     <Setter Property="BorderThickness" Value="2"/>
-                    <Setter Property="Template">
+                    <!--<Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="HeaderedContentControl">
                                 <DockPanel>
@@ -31,15 +31,34 @@
                                 </DockPanel>
                             </ControlTemplate>
                         </Setter.Value>
-                    </Setter>
+                    </Setter>-->
                 </Style>
             </StackPanel.Resources>
-            <HeaderedContentControl Header="Name">
-                <TextBox Width="100" Text="{Binding Path=Name, Mode=TwoWay}"/>
+            <HeaderedContentControl MinHeight="10" Header="Name">
+                <HeaderedContentControl.Template>
+                    <ControlTemplate TargetType="HeaderedContentControl">
+                        <DockPanel>
+                            <DockPanel LastChildFill="False">
+                                <ContentPresenter ContentSource="Header" DockPanel.Dock="Left" 
+                                              Focusable="False" VerticalAlignment="Center"/>
+                                <ContentPresenter ContentSource="Content" DockPanel.Dock="Right" 
+                                               VerticalAlignment="Center"/>
+                            </DockPanel>
+                        </DockPanel>
+                    </ControlTemplate>
+                </HeaderedContentControl.Template>
+                <TextBox MinWidth="100" MinHeight="100" Text="{Binding Path=Name, Mode=TwoWay}"/>
             </HeaderedContentControl>
-            <HeaderedContentControl Header="Description">
-                <TextBox Width="100" Text="{Binding Path=Description, Mode=TwoWay}"/>
+            <HeaderedContentControl>
+                <HeaderedContentControl.Header>
+                    <TextBlock>
+                        Description
+                    </TextBlock>
+                </HeaderedContentControl.Header>
+                <TextBox MinHeight="100" Text="{Binding Path=Description, Mode=TwoWay}"/>
             </HeaderedContentControl>
+            <TextBlock Text="Neighbor"/>
+            <ListView MinHeight="100" Margin="5,5,5,5" ItemsSource="{Binding Path=Neighbors, Mode=TwoWay}"/>
         </StackPanel>
     </Grid>
 </Window>

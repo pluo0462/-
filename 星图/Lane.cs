@@ -16,6 +16,8 @@ namespace 星图
         private int _difficulty;
         private string _endpoint1 = string.Empty;
         private string _endpoint2 = string.Empty;
+        private Star? _endStar1 = null;
+        private Star? _endStar2 = null;
         private bool _explored;
         #endregion
         [DataMember]
@@ -102,6 +104,62 @@ namespace 星图
             }
         }
 
+        internal Star? EndStar1
+        {
+            get
+            {
+                return _endStar1;
+            }
+            set
+            {
+                if (value == null) { }
+                else if (_endStar1 == null)
+                {
+                    _endStar1 = value;
+                    OnPropertyChanged(nameof(EndStar1));
+                }
+                else if (_endStar1 != value && EndStar2 != value)
+                {
+                    Star previousEnd = _endStar1;
+                    Star newEnd = value;
+
+                    previousEnd.Neighbors.Remove(this);
+                    newEnd.Neighbors.Add(this);
+
+                    _endStar1 = value;
+                    OnPropertyChanged(nameof(EndStar1));
+                }
+            }
+        }
+
+        internal Star? EndStar2
+        {
+            get
+            {
+                return _endStar2;
+            }
+            set
+            {
+                if (value == null) { }
+                else if (_endStar2 == null)
+                {
+                    _endStar2 = value;
+                    OnPropertyChanged(nameof(EndStar2));
+                }
+                else if (_endStar2 != value && EndStar1 != value)
+                {
+                    Star previousEnd = _endStar2;
+                    Star newEnd = value;
+
+                    previousEnd.Neighbors.Remove(this);
+                    newEnd.Neighbors.Add(this);
+
+                    _endStar2 = value;
+                    OnPropertyChanged(nameof(EndStar2));
+                }
+            }
+        }
+
         public Lane()
         {
             var random = new Random();
@@ -172,6 +230,12 @@ namespace 星图
                     throw new NotImplementedException("Invalid path type.");
             }
         }
+
+        internal void SwitchEndPoint()
+        {
+
+        }
+
         #region INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string propertyName)

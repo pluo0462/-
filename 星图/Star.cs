@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -97,210 +98,211 @@ namespace 星图
             }
         }
 
-        #region Solow Model 相关Properties
-        public int Population
-        {
-            get
-            {
-                return _population;
-            }
-            set
-            {
-                if (_population != value)
-                {
-                    _population = value;
-                    OnPropertyChanged(nameof(Population));
-                }
-            }
-        }
+        //#region Solow Model 相关Properties
+        //public int Population
+        //{
+        //    get
+        //    {
+        //        return _population;
+        //    }
+        //    set
+        //    {
+        //        if (_population != value)
+        //        {
+        //            _population = value;
+        //            OnPropertyChanged(nameof(Population));
+        //        }
+        //    }
+        //}
 
-        public int Capital
-        {
-            get { return _capital; }
-            set
-            {
-                if (_capital != value)
-                {
-                    _capital = value;
-                    OnPropertyChanged(nameof(Capital));
-                }
-            }
-        }
-        public double TFP
-        {
-            get
-            {
-                return _tfp;
-            }
-            set
-            {
-                if (_tfp != value)
-                {
-                    _tfp = value;
-                    OnPropertyChanged(nameof(TFP));
-                }
-            }
-        }
-        public int CapitalPC
-        {
-            get { 
-                if (Population == 0)
-                {
-                    return 0;
-                }
-                else
-                {
-                    return Capital / Population;
-                }
+        //public int Capital
+        //{
+        //    get { return _capital; }
+        //    set
+        //    {
+        //        if (_capital != value)
+        //        {
+        //            _capital = value;
+        //            OnPropertyChanged(nameof(Capital));
+        //        }
+        //    }
+        //}
+        //public double TFP
+        //{
+        //    get
+        //    {
+        //        return _tfp;
+        //    }
+        //    set
+        //    {
+        //        if (_tfp != value)
+        //        {
+        //            _tfp = value;
+        //            OnPropertyChanged(nameof(TFP));
+        //        }
+        //    }
+        //}
+        //public int CapitalPC
+        //{
+        //    get { 
+        //        if (Population == 0)
+        //        {
+        //            return 0;
+        //        }
+        //        else
+        //        {
+        //            return Capital / Population;
+        //        }
              
-                }
-            set
-            {
-                if (CapitalPC != value)
-                {
-                    Capital = value * Population;
-                    OnPropertyChanged(nameof(CapitalPC));
-                }
-            }
-        }
-        public int OutputPC
-        {
-            get
-            {
-                return (int)(CapitalPC * TFP * OutputElasticity);
-            }
-        }
+        //        }
+        //    set
+        //    {
+        //        if (CapitalPC != value)
+        //        {
+        //            Capital = value * Population;
+        //            OnPropertyChanged(nameof(CapitalPC));
+        //        }
+        //    }
+        //}
+        //public int OutputPC
+        //{
+        //    get
+        //    {
+        //        return (int)(CapitalPC * TFP * OutputElasticity);
+        //    }
+        //}
 
-        public double PopulationGrowthRate
-        {
-            get
-            {
-                return _populationGrowthRate;
-            }
-            set
-            {
-                if (value < 0)
-                {
-                    MessageBox.Show("Invalid Population Growth Rate");
-                }
-                else
-                {
-                    if (_populationGrowthRate != value)
-                    {
-                        _populationGrowthRate = value;
-                        OnPropertyChanged(nameof(PopulationGrowthRate));
-                    }
-                }
-            }
-        }
-        public double SaveRate
-        {
-            get
-            {
-                return _saveRate;
-            }
-            set
-            {
-                if (value < 0)
-                {
-                    MessageBox.Show("Invalid Save Rate");
-                }
-                else
-                {
-                    if (_saveRate != value)
-                    {
-                        _saveRate = value;
-                        OnPropertyChanged(nameof(SaveRate));
-                    }
-                }
-            }
-        }
-        public double OutputElasticity
-        {
-            get
-            {
-                return _outputElasticity;
-            }
-            set
-            {
-                if (value < 0)
-                {
-                    MessageBox.Show("Invalid Output's Elasticity");
-                }
-                else
-                {
-                    if (_outputElasticity != value)
-                    {
-                        _outputElasticity = value;
-                        OnPropertyChanged(nameof(OutputElasticity));
-                    }
-                }
-            }
-        }
-        public double CaptialDepreciateRate
-        {
-            get
-            {
-                return _captialDepreciateRate;
-            }
-            set
-            {
-                if (value < 0)
-                {
-                    MessageBox.Show("Invalid Captial Depreciate Rate");
-                }
-                else
-                {
-                    if (_captialDepreciateRate != value)
-                    {
-                        _captialDepreciateRate = value;
-                        OnPropertyChanged(nameof(CaptialDepreciateRate));
-                    }
-                }
-            }
-        }
+        //public double PopulationGrowthRate
+        //{
+        //    get
+        //    {
+        //        return _populationGrowthRate;
+        //    }
+        //    set
+        //    {
+        //        if (value < 0)
+        //        {
+        //            MessageBox.Show("Invalid Population Growth Rate");
+        //        }
+        //        else
+        //        {
+        //            if (_populationGrowthRate != value)
+        //            {
+        //                _populationGrowthRate = value;
+        //                OnPropertyChanged(nameof(PopulationGrowthRate));
+        //            }
+        //        }
+        //    }
+        //}
+        //public double SaveRate
+        //{
+        //    get
+        //    {
+        //        return _saveRate;
+        //    }
+        //    set
+        //    {
+        //        if (value < 0)
+        //        {
+        //            MessageBox.Show("Invalid Save Rate");
+        //        }
+        //        else
+        //        {
+        //            if (_saveRate != value)
+        //            {
+        //                _saveRate = value;
+        //                OnPropertyChanged(nameof(SaveRate));
+        //            }
+        //        }
+        //    }
+        //}
+        //public double OutputElasticity
+        //{
+        //    get
+        //    {
+        //        return _outputElasticity;
+        //    }
+        //    set
+        //    {
+        //        if (value < 0)
+        //        {
+        //            MessageBox.Show("Invalid Output's Elasticity");
+        //        }
+        //        else
+        //        {
+        //            if (_outputElasticity != value)
+        //            {
+        //                _outputElasticity = value;
+        //                OnPropertyChanged(nameof(OutputElasticity));
+        //            }
+        //        }
+        //    }
+        //}
+        //public double CaptialDepreciateRate
+        //{
+        //    get
+        //    {
+        //        return _captialDepreciateRate;
+        //    }
+        //    set
+        //    {
+        //        if (value < 0)
+        //        {
+        //            MessageBox.Show("Invalid Captial Depreciate Rate");
+        //        }
+        //        else
+        //        {
+        //            if (_captialDepreciateRate != value)
+        //            {
+        //                _captialDepreciateRate = value;
+        //                OnPropertyChanged(nameof(CaptialDepreciateRate));
+        //            }
+        //        }
+        //    }
+        //}
 
-        public double TaxRate
-        {
-            get
-            {
-                return _taxRate;
-            }
-            set
-            {
-                if (value < 0)
-                {
-                    MessageBox.Show("Invalid Tax Rate");
-                }
-                else
-                {
-                    if (_taxRate != value)
-                    {
-                        _taxRate = value;
-                        OnPropertyChanged(nameof(TaxRate));
-                    }
-                }
-            }
-        }
-        public bool Habitable
-        {
-            get
-            {
-                return _habitable;
-            }
-            set
-            {
-                if (_habitable != value)
-                {
-                    _habitable = value;
-                    OnPropertyChanged(nameof(Habitable));
-                }
-            }
-        }
-        #endregion
+        //public double TaxRate
+        //{
+        //    get
+        //    {
+        //        return _taxRate;
+        //    }
+        //    set
+        //    {
+        //        if (value < 0)
+        //        {
+        //            MessageBox.Show("Invalid Tax Rate");
+        //        }
+        //        else
+        //        {
+        //            if (_taxRate != value)
+        //            {
+        //                _taxRate = value;
+        //                OnPropertyChanged(nameof(TaxRate));
+        //            }
+        //        }
+        //    }
+        //}
+        //public bool Habitable
+        //{
+        //    get
+        //    {
+        //        return _habitable;
+        //    }
+        //    set
+        //    {
+        //        if (_habitable != value)
+        //        {
+        //            _habitable = value;
+        //            OnPropertyChanged(nameof(Habitable));
+        //        }
+        //    }
+        //}
+        //#endregion
 
-        public Dictionary<Star, Lane> Neighbors { get; } = [];
-
+        //public Dictionary<Star, Lane> Neighbors { get; } = [];
+        public ObservableCollection<Lane> Neighbors { get; } = [];
+        
         // The Coordinate property should be used in map drawing only!
         public System.Windows.Point Coordinate { get; set; }
 

@@ -75,9 +75,68 @@ namespace 星图
         #endregion
 
         [DataMember]
-        internal List<Star> Stars { get; } = [];
+        internal HashSet<Star> Stars { get; } = [];
         [DataMember]
-        internal List<Lane> Lanes { get; } = []; 
+        internal HashSet<Lane> Lanes { get; } = [];
+
+        internal Dictionary<string, Star> StarDict { get; } = [];
+
+        internal void AddStar(Star star)
+        {
+            Stars.Add(star);
+            StarDict[star.Name] = star;
+        }
+
+        /// <summary>
+        /// If a Star is deleted, then all Lane it has will be deleted, too.
+        /// </summary>
+        /// <param name="star"></param>
+        internal void RemoveStar(Star star)
+        {
+            Stars.Remove(star);
+            StarDict.Remove(star.Name);
+
+            foreach(Lane l in star.Neighbors)
+            {
+                Star neighborStar = l.Endpoint1 == star.Name ? StarDict[l.Endpoint2] : StarDict[l.Endpoint1];
+                neighborStar.Neighbors.Remove(l);
+                Lanes.Remove(l);
+            }
+        }
+
+        internal void RemoveStar(string starName)
+        {
+            Star star = StarDict[starName];
+            Stars.Remove(star);
+            StarDict.Remove(starName);
+
+            foreach (Lane l in star.Neighbors)
+            {
+                Star neighborStar = l.Endpoint1 == star.Name ? StarDict[l.Endpoint2] : StarDict[l.Endpoint1];
+                neighborStar.Neighbors.Remove(l);
+                Lanes.Remove(l);
+            }
+        }
+
+        internal void RemoveLane(Lane lane)
+        {
+            Star? endStar1 = lane.EndStar1;
+            Star? endStar2 = lane.EndStar2;
+
+            if (endStar1 == null || endStar2 == null)
+            {
+                throw new Exception("Invalid Operation: Try to remove a uninitialized lane");
+            }
+            
+            endStar1.Neighbors.Remove(lane);
+            endStar2.Neighbors.Remove(lane);
+            Lanes.Remove(l);
+        }
+
+        internal void AddLane(Lane lane)
+        {
+
+        }
 
         public void Clean()
         {
