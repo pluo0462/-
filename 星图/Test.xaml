@@ -15,7 +15,7 @@
         <Grid.Background>
             <SolidColorBrush Opacity="0"/>
         </Grid.Background>
-        <Image Source="src/36px-Pc_black_hole.png" Grid.Row="1"/>
+        <Image Source="src/BlackHole.png" Grid.Row="1"/>
         <TextBlock Grid.Row="2" FontSize="6">不自在的天空</TextBlock>
     </Grid>
 </Window>

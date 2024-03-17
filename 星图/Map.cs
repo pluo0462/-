@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -41,20 +42,20 @@ namespace 星图
     [KnownType(typeof(Lane))]
     [KnownType(typeof(List<Star>))]
     [KnownType(typeof(List<Lane>))]
-    internal class Map
+    public class Map
     {
         #region 全局随机属性
         private const double _basicStarHabitableChance = 0.05;
 
         public static List<double> StarTypeChance { get; } = [10, 10, 15, 30, 20, 20, 10, 0.8, 0.4, 0.4];
 
-        public static List<double> StarHabitableChance { get; } = 
+        public static List<double> StarHabitableChance { get; } =
             [
-                0.6 * _basicStarHabitableChance, 
-                0.6 * _basicStarHabitableChance, 
-                _basicStarHabitableChance, 
-                _basicStarHabitableChance, 
-                _basicStarHabitableChance, 
+                0.6 * _basicStarHabitableChance,
+                0.6 * _basicStarHabitableChance,
+                _basicStarHabitableChance,
+                _basicStarHabitableChance,
+                _basicStarHabitableChance,
                 0.4 * _basicStarHabitableChance,
                 0.1 * _basicStarHabitableChance,
                 0.4 * _basicStarHabitableChance,
@@ -77,9 +78,9 @@ namespace 星图
         #endregion
 
         [DataMember]
-        internal HashSet<Star> Stars { get; } = [];
+        public ObservableCollection<Star> Stars { get; } = [];
         [DataMember]
-        internal HashSet<Lane> Lanes { get; } = [];
+        public ObservableCollection<Lane> Lanes { get; } = [];
 
         internal Dictionary<string, Star> StarDict { get; } = [];
 
@@ -98,10 +99,10 @@ namespace 星图
             Stars.Remove(star);
             StarDict.Remove(star.Name);
 
-            foreach(Lane l in star.Neighbors)
+            foreach (Lane l in star.Lanes)
             {
-                Star neighborStar = l.Endpoint1_Name == star.Name ? StarDict[l.Endpoint2_Name] : StarDict[l.Endpoint1_Name];
-                neighborStar.Neighbors.Remove(l);
+                Star neighborStar = l.Endpoint1_Star == star ? l.Endpoint2_Star : l.Endpoint1_Star;
+                neighborStar.Lanes.Remove(l);
                 Lanes.Remove(l);
             }
         }
@@ -110,14 +111,29 @@ namespace 星图
         {
             Star star = StarDict[starName];
             Stars.Remove(star);
-            StarDict.Remove(starName);
+            StarDict.Remove(star.Name);
 
-            foreach (Lane l in star.Neighbors)
+            foreach (Lane l in star.Lanes)
             {
-                Star neighborStar = l.Endpoint1_Name == star.Name ? StarDict[l.Endpoint2_Name] : StarDict[l.Endpoint1_Name];
-                neighborStar.Neighbors.Remove(l);
+                Star neighborStar = l.Endpoint1_Star == star ? l.Endpoint2_Star : l.Endpoint1_Star;
+                neighborStar.Lanes.Remove(l);
                 Lanes.Remove(l);
             }
+        }
+
+        internal void ConnectStars(Star star1, Star star2)
+        {
+            Lane lane = new(star1, star2);
+            Lanes.Add(lane);
+        }
+
+        internal void ConnectStars(string star1_name, string star2_name)
+        {
+            Star star1 = StarDict[star1_name];
+            Star star2 = StarDict[star2_name];
+
+            Lane lane = new(star1, star2);
+            Lanes.Add(lane);
         }
 
         internal void RemoveLane(Lane lane)
@@ -129,15 +145,10 @@ namespace 星图
             {
                 throw new Exception("Invalid Operation: Try to remove a uninitialized lane");
             }
-            
-            endStar1.Neighbors.Remove(lane);
-            endStar2.Neighbors.Remove(lane);
-            Lanes.Remove(l);
-        }
 
-        internal void AddLane(Lane lane)
-        {
-
+            endStar1.Lanes.Remove(lane);
+            endStar2.Lanes.Remove(lane);
+            Lanes.Remove(lane);
         }
 
         public void Clean()
@@ -145,26 +156,6 @@ namespace 星图
             foreach (Star s in Stars)
             {
                 s.Visited = false;
-            }
-        }
-
-        public void WriteMap()
-        {
-            DataContractSerializer starSerializers = new(typeof(Star), new Type[] { typeof(List<Star>) });
-            using (FileStream fs = new(@"save\stars.xml", FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                using (XmlDictionaryWriter xdw = XmlDictionaryWriter.CreateTextWriter(fs, Encoding.UTF8))
-                {
-                    starSerializers.WriteObject(xdw, Stars);
-                }
-            }
-            DataContractSerializer laneSerializers = new(typeof(Lane), new Type[] {typeof(List<Lane>) });
-            using (FileStream fs = new(@"save\lanes.xml", FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                using (XmlDictionaryWriter xdw = XmlDictionaryWriter.CreateTextWriter(fs, Encoding.UTF8))
-                {
-                    laneSerializers.WriteObject(xdw, Lanes);
-                }
             }
         }
     }

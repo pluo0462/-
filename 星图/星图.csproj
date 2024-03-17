@@ -9,7 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="save\star.xml" />
+    <Compile Remove="save\**" />
+    <EmbeddedResource Remove="save\**" />
+    <None Remove="save\**" />
+    <Page Remove="save\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="src\Background.jpg" />
     <None Remove="src\Background2.jpg" />
     <None Remove="src\Background3.jpg" />
@@ -69,10 +75,6 @@
     <Content Include="src\ClassTBD.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="save\" />
   </ItemGroup>
 	
 </Project>

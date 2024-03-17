@@ -56,7 +56,6 @@ namespace 星图
             var dialog = new Microsoft.Win32.OpenFileDialog();
             dialog.DefaultExt = ".xml";
             dialog.Filter = "Map XML (.xml)|*.xml";
-            dialog.DefaultDirectory = @"save\";
             dialog.Multiselect = false;
 
             bool? result = dialog.ShowDialog();
@@ -69,13 +68,21 @@ namespace 星图
                     using (XmlDictionaryReader xdr = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas()))
                     {
                         map = dcs.ReadObject(xdr) as Map;
-                        MapName_textb.Text = dialog.FileName;
                     }       
                 }
 
-                EditMap_btn.IsEnabled = true;
-                DisplayMap_btn.IsEnabled = true;
-                CreateInteractiveMap_btn.IsEnabled = true;
+                if (map != null)
+                {
+                    MapName_textb.Text = dialog.FileName;
+                    EditMap_btn.IsEnabled = true;
+                    //DisplayMap_btn.IsEnabled = true;
+
+                    foreach (Lane l in map.Lanes)
+                    {
+                        l.Endpoint1_Star = map.StarDict[l.Endpoint1_Name];
+                        l.Endpoint2_Star = map.StarDict[l.Endpoint2_Name];
+                    }
+                }
             }
         }
 
@@ -90,7 +97,6 @@ namespace 星图
             dialog.DefaultExt = ".xml";
             dialog.Filter = "Map XML (.xml)|*.xml";
             dialog.AddExtension = true;
-            dialog.DefaultDirectory = @"save\";
             bool? result = dialog.ShowDialog();
 
             if (result == true)

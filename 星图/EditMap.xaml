@@ -6,6 +6,21 @@
         xmlns:local="clr-namespace:星图"
         mc:Ignorable="d"
         Title="EditMap" Height="450" Width="800">
+    <Window.Resources>
+        <ControlTemplate x:Key="StarProperty_hcc_ct" TargetType="HeaderedContentControl">
+            <DockPanel>
+                <ContentPresenter ContentSource="Header" DockPanel.Dock="Left" 
+                                              Focusable="False" VerticalAlignment="Center"/>
+                <ContentPresenter ContentSource="Content" DockPanel.Dock="Right" 
+                                               VerticalAlignment="Center"/>
+            </DockPanel>
+        </ControlTemplate>
+        <Style x:Key="StarProperty_hc" TargetType="HeaderedContentControl">
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template" Value="{StaticResource StarProperty_hcc_ct}"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -13,41 +28,38 @@
         </Grid.ColumnDefinitions>
         <ListBox x:Name="Stars_lb" Grid.Column="0" BorderBrush="Black" ItemsSource="{Binding Path=Stars}"/>
         <StackPanel Grid.Column="1">
-            <StackPanel.Resources>
+            <!--<StackPanel.Resources>
                 <Style TargetType="HeaderedContentControl">
-                    <!--<Setter Property="Margin" Value="2"/>-->
                     <Setter Property="BorderBrush" Value="Black"/>
                     <Setter Property="BorderThickness" Value="2"/>
-                    <!--<Setter Property="Template">
+                    <Setter Property="Template">
                         <Setter.Value>
-                            <ControlTemplate TargetType="HeaderedContentControl">
-                                <DockPanel>
-                                    <DockPanel LastChildFill="False">
-                                        <ContentPresenter ContentSource="Header" DockPanel.Dock="Left" 
-                                  Focusable="False" VerticalAlignment="Center"/>
-                                        <ContentPresenter ContentSource="Content" Margin="5,0,0,0" 
-                                  DockPanel.Dock="Right" VerticalAlignment="Center"/>
-                                    </DockPanel>
-                                </DockPanel>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>-->
-                </Style>
-            </StackPanel.Resources>
-            <HeaderedContentControl MinHeight="10" Header="Name">
-                <HeaderedContentControl.Template>
-                    <ControlTemplate TargetType="HeaderedContentControl">
-                        <DockPanel>
-                            <DockPanel LastChildFill="False">
+                        <ControlTemplate TargetType="HeaderedContentControl">
+                            <DockPanel>
                                 <ContentPresenter ContentSource="Header" DockPanel.Dock="Left" 
                                               Focusable="False" VerticalAlignment="Center"/>
                                 <ContentPresenter ContentSource="Content" DockPanel.Dock="Right" 
                                                VerticalAlignment="Center"/>
                             </DockPanel>
+                        </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </StackPanel.Resources>-->
+            <HeaderedContentControl Style="{StaticResource StarProperty_hc}" MinHeight="10" Header="Name">
+                <!--<HeaderedContentControl.Template>
+                    <ControlTemplate TargetType="HeaderedContentControl">
+                        <DockPanel>
+                            <ContentPresenter ContentSource="Header" DockPanel.Dock="Left" 
+                                              Focusable="False" VerticalAlignment="Center"/>
+                            <ContentPresenter ContentSource="Content" DockPanel.Dock="Right" 
+                                               VerticalAlignment="Center"/>
                         </DockPanel>
                     </ControlTemplate>
-                </HeaderedContentControl.Template>
+                </HeaderedContentControl.Template>-->
                 <TextBox MinWidth="100" MinHeight="100" Text="{Binding Path=Name, Mode=TwoWay}"/>
+            </HeaderedContentControl>
+            <HeaderedContentControl MinHeight="10" Header="Star Type">
             </HeaderedContentControl>
             <HeaderedContentControl>
                 <HeaderedContentControl.Header>

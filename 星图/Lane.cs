@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 namespace 星图
 {
     [DataContract]
-    internal class Lane : INotifyPropertyChanged, IExtensibleDataObject
+    public class Lane : INotifyPropertyChanged, IExtensibleDataObject
     {
         #region Fields
         private LaneType _type;
         private int _difficulty;
         private string _endpoint1_name = string.Empty;
         private string _endpoint2_name = string.Empty;
-        private Star? _endpoint1_star = null;
-        private Star? _endpoint2_star = null;
+        private Star _endpoint1_star;
+        private Star _endpoint2_star;
         private bool _explored;
         #endregion
-        
+
         [DataMember]
         public LaneType Type
         {
@@ -88,7 +88,6 @@ namespace 星图
                 }
             }
         }
-
         [DataMember]
         public string Endpoint2_Name
         {
@@ -106,7 +105,7 @@ namespace 星图
             }
         }
 
-        internal Star? Endpoint1_Star
+        public Star Endpoint1_Star
         {
             get
             {
@@ -125,8 +124,8 @@ namespace 星图
                     Star previousEnd = _endpoint1_star;
                     Star newEnd = value;
 
-                    previousEnd.Neighbors.Remove(this);
-                    newEnd.Neighbors.Add(this);
+                    previousEnd.Lanes.Remove(this);
+                    newEnd.Lanes.Add(this);
 
                     _endpoint1_star = value;
                     OnPropertyChanged(nameof(Endpoint1_Star));
@@ -134,7 +133,7 @@ namespace 星图
             }
         }
 
-        internal Star? Endpoint2_Star
+        public Star Endpoint2_Star
         {
             get
             {
@@ -153,8 +152,8 @@ namespace 星图
                     Star previousEnd = _endpoint2_star;
                     Star newEnd = value;
 
-                    previousEnd.Neighbors.Remove(this);
-                    newEnd.Neighbors.Add(this);
+                    previousEnd.Lanes.Remove(this);
+                    newEnd.Lanes.Add(this);
 
                     _endpoint2_star = value;
                     OnPropertyChanged(nameof(Endpoint2_Star));
@@ -162,52 +161,27 @@ namespace 星图
             }
         }
 
-        public Lane()
-        {
-            RandomHyperLane();
-
-            var random = new Random();
-            double p = random.NextDouble();
-
-            if (p < 0.36)
-            {
-                Type = LaneType.HyperLane;
-                Difficulty = 1;
-            }
-            else if (p < 0.63)
-            {
-                Type = LaneType.HyperLane;
-                Difficulty = 2;
-            }
-            else if (p < 0.81)
-            {
-                Type = LaneType.HyperLane;
-                Difficulty = 3;
-            }
-            else if (p < 0.9)
-            {
-                Type = LaneType.HyperLane;
-                Difficulty = 4;
-            }
-            else
-            {
-                Type = LaneType.JumpGate;
-                Difficulty = 0;
-            }
-        }
-
         public Lane(Star endpoint1_star, Star endpoint2_star)
         {
-            RandomHyperLane();
-            Endpoint1_Star = endpoint1_star;
-            Endpoint2_Star = endpoint2_star;
+            if (endpoint1_star == endpoint2_star)
+            {
+                throw new Exception("Self-loop Lane is not allowed");
+            }
+
+            RandomLane();
+            _endpoint1_star = endpoint1_star;
+            _endpoint2_star = endpoint2_star;
+
+            endpoint1_star.Lanes.Add(this);
+            endpoint2_star.Lanes.Add(this);
         }
 
-        internal void RandomLane()
-        {
-            var random = new Random();
-            double p = random.NextDouble();
+#region 用于随机生成的Function
 
+        private void RandomLane()
+        {
+            Random random = new();
+            double p = random.NextDouble();
             if (p < 0.36)
             {
                 Type = LaneType.HyperLane;
@@ -231,33 +205,9 @@ namespace 星图
             else
             {
                 Type = LaneType.JumpGate;
-                Difficulty = 0;
             }
         }
-
-        internal void RandomHyperLane()
-        {
-            Type = LaneType.HyperLane;
-            var random = new Random();
-            double p = random.NextDouble();
-
-            if (p < 0.4)
-            {
-                Difficulty = 1;
-            }
-            else if (p < 0.7)
-            {
-                Difficulty = 2;
-            }
-            else if (p < 0.9)
-            {
-                Difficulty = 3;
-            }
-            else
-            {
-                Difficulty = 4;
-            }
-        }
+#endregion
 
         #region INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler? PropertyChanged;
