@@ -12,7 +12,7 @@ namespace 星图
     internal class Lane : INotifyPropertyChanged, IExtensibleDataObject
     {
         #region Fields
-        private Map.LaneType _type;
+        private LaneType _type;
         private int _difficulty;
         private string _endpoint1 = string.Empty;
         private string _endpoint2 = string.Empty;
@@ -21,7 +21,7 @@ namespace 星图
         private bool _explored;
         #endregion
         [DataMember]
-        public Map.LaneType Type
+        public LaneType Type
         {
             get
             {
@@ -167,36 +167,36 @@ namespace 星图
 
             if (p < 0.36)
             {
-                Type = Map.LaneType.HyperLane;
+                Type = LaneType.HyperLane;
                 Difficulty = 1;
             }
             else if (p < 0.63)
             {
-                Type = Map.LaneType.HyperLane;
+                Type = LaneType.HyperLane;
                 Difficulty = 2;
             }
             else if (p < 0.81)
             {
-                Type = Map.LaneType.HyperLane;
+                Type = LaneType.HyperLane;
                 Difficulty = 3;
             }
             else if (p < 0.9)
             {
-                Type = Map.LaneType.HyperLane;
+                Type = LaneType.HyperLane;
                 Difficulty = 4;
             }
             else
             {
-                Type = Map.LaneType.JumpGate;
+                Type = LaneType.JumpGate;
                 Difficulty = 0;
             }
         }
 
-        public Lane(Map.LaneType pathType)
+        public Lane(LaneType pathType)
         {
             switch (pathType)
             {
-                case Map.LaneType.HyperLane:
+                case LaneType.HyperLane:
                     Type = pathType;
                     var random = new Random();
                     double p = random.NextDouble();
@@ -218,11 +218,11 @@ namespace 星图
                     }
                     break;
 
-                case Map.LaneType.JumpGate:
+                case LaneType.JumpGate:
                     Type = pathType;
                     Difficulty = 0;
                     break;
-                case Map.LaneType.PsychicSpace:
+                case LaneType.PsychicSpace:
                     Type = pathType;
                     Difficulty = 0;
                     break;

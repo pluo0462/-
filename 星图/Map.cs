@@ -10,8 +10,32 @@ using System.Xml;
 namespace 星图
 {
     /// <summary>
-    /// Global variables for map display. 
+    /// Global Setting for map display. 
     /// </summary>
+    /// 
+
+    public enum StarType
+    {
+        ClassA,
+        ClassB,
+        ClassF,
+        ClassG,
+        ClassK,
+        ClassM,
+        ClassMRG,
+        ClassTBD,
+        BlackHole,
+        Neutron,
+        Pulsar,
+    }
+
+    public enum LaneType
+    {
+        HyperLane,
+        JumpGate,
+        PsychicSpace,
+    }
+
     [DataContract]
     [KnownType(typeof(Star))]
     [KnownType(typeof(Lane))]
@@ -19,30 +43,8 @@ namespace 星图
     [KnownType(typeof(List<Lane>))]
     internal class Map
     {
-        #region 全局属性
+        #region 全局随机属性
         private const double _basicStarHabitableChance = 0.05;
-        public enum StarType
-        {
-            ClassA,
-            ClassB,
-            ClassF,
-            ClassG,
-            ClassK,
-            ClassM,
-            ClassMRG,
-            ClassTBD,
-            BlackHole,
-            Neutron,
-            Pulsar,
-        }
-
-        public enum LaneType
-        { 
-            HyperLane,
-            JumpGate,
-            PsychicSpace,
-        }
-
 
         public static List<double> StarTypeChance { get; } = [10, 10, 15, 30, 20, 20, 10, 0.8, 0.4, 0.4];
 

@@ -18,7 +18,7 @@ namespace 星图
         #region Fields
         private string _name = string.Empty;
         private string _description = string.Empty;
-        private Map.StarType _starType;
+        private StarType _starType;
         private bool _explored = false;
         private int _population = 0;
         private int _capital = 0;
@@ -65,7 +65,7 @@ namespace 星图
         }
 
         [DataMember]
-        public Map.StarType StarType
+        public StarType StarType
         {
             get 
             { 
@@ -327,7 +327,7 @@ namespace 星图
             Description = description;
             Explored = true;
         }
-        public Star(string name, string description, Map.StarType starType)
+        public Star(string name, string description, StarType starType)
         {
             Name = name;
             Description = description;
