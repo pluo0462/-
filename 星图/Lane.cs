@@ -14,12 +14,13 @@ namespace 星图
         #region Fields
         private LaneType _type;
         private int _difficulty;
-        private string _endpoint1 = string.Empty;
-        private string _endpoint2 = string.Empty;
-        private Star? _endStar1 = null;
-        private Star? _endStar2 = null;
+        private string _endpoint1_name = string.Empty;
+        private string _endpoint2_name = string.Empty;
+        private Star? _endpoint1_star = null;
+        private Star? _endpoint2_star = null;
         private bool _explored;
         #endregion
+        
         [DataMember]
         public LaneType Type
         {
@@ -72,95 +73,137 @@ namespace 星图
         }
 
         [DataMember]
-        public string Endpoint1
+        public string Endpoint1_Name
         {
             get
             {
-                return _endpoint1;
+                return _endpoint1_name;
             }
             set
             {
-                if (_endpoint1 != value)
+                if (_endpoint1_name != value)
                 {
-                    _endpoint1 = value;
-                    OnPropertyChanged(nameof(Endpoint1));
+                    _endpoint1_name = value;
+                    OnPropertyChanged(nameof(Endpoint1_Name));
                 }
             }
         }
+
         [DataMember]
-        public string Endpoint2
+        public string Endpoint2_Name
         {
             get
             {
-                return _endpoint2;
+                return _endpoint2_name;
             }
             set
             {
-                if (_endpoint2 != value)
+                if (_endpoint2_name != value)
                 {
-                    _endpoint2 = value;
-                    OnPropertyChanged(nameof(Endpoint2));
+                    _endpoint2_name = value;
+                    OnPropertyChanged(nameof(Endpoint2_Name));
                 }
             }
         }
 
-        internal Star? EndStar1
+        internal Star? Endpoint1_Star
         {
             get
             {
-                return _endStar1;
+                return _endpoint1_star;
             }
             set
             {
                 if (value == null) { }
-                else if (_endStar1 == null)
+                else if (_endpoint1_star == null)
                 {
-                    _endStar1 = value;
-                    OnPropertyChanged(nameof(EndStar1));
+                    _endpoint1_star = value;
+                    OnPropertyChanged(nameof(Endpoint1_Star));
                 }
-                else if (_endStar1 != value && EndStar2 != value)
+                else if (_endpoint1_star != value && Endpoint2_Star != value)
                 {
-                    Star previousEnd = _endStar1;
+                    Star previousEnd = _endpoint1_star;
                     Star newEnd = value;
 
                     previousEnd.Neighbors.Remove(this);
                     newEnd.Neighbors.Add(this);
 
-                    _endStar1 = value;
-                    OnPropertyChanged(nameof(EndStar1));
+                    _endpoint1_star = value;
+                    OnPropertyChanged(nameof(Endpoint1_Star));
                 }
             }
         }
 
-        internal Star? EndStar2
+        internal Star? Endpoint2_Star
         {
             get
             {
-                return _endStar2;
+                return _endpoint2_star;
             }
             set
             {
                 if (value == null) { }
-                else if (_endStar2 == null)
+                else if (_endpoint2_star == null)
                 {
-                    _endStar2 = value;
-                    OnPropertyChanged(nameof(EndStar2));
+                    _endpoint2_star = value;
+                    OnPropertyChanged(nameof(Endpoint2_Star));
                 }
-                else if (_endStar2 != value && EndStar1 != value)
+                else if (_endpoint2_star != value && Endpoint1_Star != value)
                 {
-                    Star previousEnd = _endStar2;
+                    Star previousEnd = _endpoint2_star;
                     Star newEnd = value;
 
                     previousEnd.Neighbors.Remove(this);
                     newEnd.Neighbors.Add(this);
 
-                    _endStar2 = value;
-                    OnPropertyChanged(nameof(EndStar2));
+                    _endpoint2_star = value;
+                    OnPropertyChanged(nameof(Endpoint2_Star));
                 }
             }
         }
 
         public Lane()
+        {
+            RandomHyperLane();
+
+            var random = new Random();
+            double p = random.NextDouble();
+
+            if (p < 0.36)
+            {
+                Type = LaneType.HyperLane;
+                Difficulty = 1;
+            }
+            else if (p < 0.63)
+            {
+                Type = LaneType.HyperLane;
+                Difficulty = 2;
+            }
+            else if (p < 0.81)
+            {
+                Type = LaneType.HyperLane;
+                Difficulty = 3;
+            }
+            else if (p < 0.9)
+            {
+                Type = LaneType.HyperLane;
+                Difficulty = 4;
+            }
+            else
+            {
+                Type = LaneType.JumpGate;
+                Difficulty = 0;
+            }
+        }
+
+        public Lane(Star endpoint1_star, Star endpoint2_star)
+        {
+            RandomHyperLane();
+            Endpoint1_Star = endpoint1_star;
+            Endpoint2_Star = endpoint2_star;
+        }
+
+        internal void RandomLane()
         {
             var random = new Random();
             double p = random.NextDouble();
@@ -192,48 +235,28 @@ namespace 星图
             }
         }
 
-        public Lane(LaneType pathType)
+        internal void RandomHyperLane()
         {
-            switch (pathType)
+            Type = LaneType.HyperLane;
+            var random = new Random();
+            double p = random.NextDouble();
+
+            if (p < 0.4)
             {
-                case LaneType.HyperLane:
-                    Type = pathType;
-                    var random = new Random();
-                    double p = random.NextDouble();
-                    if (p < 0.4)
-                    {
-                        Difficulty = 1;
-                    }
-                    else if (p < 0.7)
-                    {
-                        Difficulty = 2;
-                    }
-                    else if (p < 0.9)
-                    {
-                        Difficulty = 3;
-                    }
-                    else 
-                    {
-                        Difficulty = 4;
-                    }
-                    break;
-
-                case LaneType.JumpGate:
-                    Type = pathType;
-                    Difficulty = 0;
-                    break;
-                case LaneType.PsychicSpace:
-                    Type = pathType;
-                    Difficulty = 0;
-                    break;
-                default:
-                    throw new NotImplementedException("Invalid path type.");
+                Difficulty = 1;
             }
-        }
-
-        internal void SwitchEndPoint()
-        {
-
+            else if (p < 0.7)
+            {
+                Difficulty = 2;
+            }
+            else if (p < 0.9)
+            {
+                Difficulty = 3;
+            }
+            else
+            {
+                Difficulty = 4;
+            }
         }
 
         #region INotifyPropertyChanged Implementation

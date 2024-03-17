@@ -100,7 +100,7 @@ namespace 星图
 
             foreach(Lane l in star.Neighbors)
             {
-                Star neighborStar = l.Endpoint1 == star.Name ? StarDict[l.Endpoint2] : StarDict[l.Endpoint1];
+                Star neighborStar = l.Endpoint1_Name == star.Name ? StarDict[l.Endpoint2_Name] : StarDict[l.Endpoint1_Name];
                 neighborStar.Neighbors.Remove(l);
                 Lanes.Remove(l);
             }
@@ -114,7 +114,7 @@ namespace 星图
 
             foreach (Lane l in star.Neighbors)
             {
-                Star neighborStar = l.Endpoint1 == star.Name ? StarDict[l.Endpoint2] : StarDict[l.Endpoint1];
+                Star neighborStar = l.Endpoint1_Name == star.Name ? StarDict[l.Endpoint2_Name] : StarDict[l.Endpoint1_Name];
                 neighborStar.Neighbors.Remove(l);
                 Lanes.Remove(l);
             }
@@ -122,8 +122,8 @@ namespace 星图
 
         internal void RemoveLane(Lane lane)
         {
-            Star? endStar1 = lane.EndStar1;
-            Star? endStar2 = lane.EndStar2;
+            Star? endStar1 = lane.Endpoint1_Star;
+            Star? endStar2 = lane.Endpoint2_Star;
 
             if (endStar1 == null || endStar2 == null)
             {
