@@ -27,6 +27,7 @@ namespace 星图
             ConnectStars(B, C);
             ConnectStars(B, D);
             ConnectStars(D, E);
+            ConnectStars(A, E);
         }
     }
 }

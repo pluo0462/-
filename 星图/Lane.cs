@@ -128,6 +128,8 @@ namespace 星图
                 }
                 else if (_endpoint1_star != value /*&& Endpoint2_Star != value*/)
                 {
+                    Console.WriteLine("Lane Endpoint1_Star Change");
+
                     Star previousEnd = _endpoint1_star;
                     Star newEnd = value;
 
@@ -162,6 +164,8 @@ namespace 星图
                 }
                 else if (_endpoint2_star != value /*&& Endpoint1_Star != value*/)
                 {
+                    Console.WriteLine("Lane Endpoint2_Star Change");
+
                     Star previousEnd = _endpoint2_star;
                     Star newEnd = value;
 
