@@ -127,6 +127,12 @@ namespace 星图
             Lanes.Add(lane);
         }
 
+        internal void ConnectStars(Star star1, Star star2, LaneType laneType)
+        {
+            Lane lane = new(star1, star2, laneType);
+            Lanes.Add(lane);
+        }
+
         internal void ConnectStars(string star1_name, string star2_name)
         {
             Star star1 = StarDict[star1_name];

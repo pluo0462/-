@@ -38,10 +38,36 @@ namespace 星图
             //}
         }
 
+        private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
+        {
+            Star selectedStar = (StarBoxs as ListBox).SelectedItem as Star;
+            e.Accepted = e.Item != selectedStar;
+        }
+
+        private void StarBoxs_AddStar_Click(object sender, RoutedEventArgs e)
+        {
+            Star newStar = new Star("New Star", "Add Description Here");
+            (DataContext as Map).AddStar(newStar);
+
+        }
+
+        private void StarBoxs_RemoveStar_Click(object sender, RoutedEventArgs e)
+        {
+            Star selectedStar = (StarBoxs as ListBox).SelectedItem as Star;
+            (DataContext as Map).RemoveStar(selectedStar);
+            //MessageBox.Show(selectedStar.Name);
+        }
+
+        private void AddLane_Click(object sender, RoutedEventArgs e)
+        {
+            EditLane editLaneWindow = new EditLane() { DataContext =  this.DataContext };
+            editLaneWindow.Show();
+        }
+
         //private void StarBoxs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{
         //    Star? selectedStar = StarBoxs.SelectedItem as Star;
-   
+
         //    if (selectedStar != null && StarType_ComboBox != null)
         //    {
         //        StarType_ComboBox.SelectedItem = selectedStar.StarType;
@@ -68,25 +94,52 @@ namespace 星图
 
     }
 
-    public class StarCheck_Converter : IValueConverter
+    public class StarCheck_Converter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            return value + (parameter as string);
+            if (values.Length != 3)
+            {
+                throw new ArgumentException("Invalid Argument: Must be three argument");
+            }
 
-            //if (parameter == value)
-            //{
-            //    return DependencyProperty.UnsetValue;
-            //}
-            //else
-            //{
-            //    return value;
-            //}
+            if (values[0] == values[1])
+            {
+                return values[2];
+            }
+            else if (values[0] == values[2])
+            {
+                return values[1];
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Argument: Must be equivalent stars");
+            }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            return value;
+            return null;
+        }
+    }
+
+    public class StarCheck2_Converter : IValueConverter
+    {
+        public object Convert(object values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values == parameter)
+            {
+                return DependencyProperty.UnsetValue;
+            }
+            else
+            {
+                return values;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetTypes, object parameter, CultureInfo culture)
+        {
+            return null;
         }
     }
 }

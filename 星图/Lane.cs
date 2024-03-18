@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace 星图
 {
@@ -113,13 +114,19 @@ namespace 星图
             }
             set
             {
+                //if (_endpoint1_star != value)
+                //{
+                //    _endpoint1_star = value;
+                //    OnPropertyChanged(nameof(Endpoint1_Star));
+                //}
+
                 if (value == null) { }
                 else if (_endpoint1_star == null)
                 {
                     _endpoint1_star = value;
                     OnPropertyChanged(nameof(Endpoint1_Star));
                 }
-                else if (_endpoint1_star != value && Endpoint2_Star != value)
+                else if (_endpoint1_star != value /*&& Endpoint2_Star != value*/)
                 {
                     Star previousEnd = _endpoint1_star;
                     Star newEnd = value;
@@ -141,13 +148,19 @@ namespace 星图
             }
             set
             {
+                //if (_endpoint2_star != value)
+                //{
+                //    _endpoint2_star = value;
+                //    OnPropertyChanged(nameof(Endpoint2_Star));
+                //}
+
                 if (value == null) { }
                 else if (_endpoint2_star == null)
                 {
                     _endpoint2_star = value;
                     OnPropertyChanged(nameof(Endpoint2_Star));
                 }
-                else if (_endpoint2_star != value && Endpoint1_Star != value)
+                else if (_endpoint2_star != value /*&& Endpoint1_Star != value*/)
                 {
                     Star previousEnd = _endpoint2_star;
                     Star newEnd = value;
@@ -176,7 +189,38 @@ namespace 星图
             endpoint2_star.Lanes.Add(this);
         }
 
-#region 用于随机生成的Function
+        public Lane(Star endpoint1_star, Star endpoint2_star, LaneType laneType)
+        {
+            if (endpoint1_star == endpoint2_star)
+            {
+                throw new Exception("Self-loop Lane is not allowed");
+            }
+
+            RandomLane();
+
+            switch (laneType)
+            {
+                case LaneType.JumpGate:
+                    Type = LaneType.JumpGate;
+                    break;
+                case LaneType.HyperLane:
+                    Type = LaneType.HyperLane;
+                    Difficulty = 0;
+                    break;
+                case LaneType.PsychicSpace:
+                    Type = LaneType.PsychicSpace;
+                    Difficulty = 0;
+                    break;
+            }
+
+            _endpoint1_star = endpoint1_star;
+            _endpoint2_star = endpoint2_star;
+
+            endpoint1_star.Lanes.Add(this);
+            endpoint2_star.Lanes.Add(this);
+        }
+
+        #region 用于随机生成的Function
 
         private void RandomLane()
         {
