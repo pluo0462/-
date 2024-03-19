@@ -224,6 +224,15 @@ namespace 星图
             endpoint2_star.Lanes.Add(this);
         }
 
+        public void OrganizeEndpoint(Star originStar)
+        {
+            if (_endpoint1_star != originStar)
+            {
+                _endpoint2_star = _endpoint1_star;
+                _endpoint1_star = originStar;
+            }
+        }
+
         #region 用于随机生成的Function
 
         private void RandomLane()

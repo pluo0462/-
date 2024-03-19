@@ -60,7 +60,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <ListBox Name="StarBoxs" Grid.Column="0" ItemsSource="{Binding Source={StaticResource StarView}}" DisplayMemberPath="Name" IsSynchronizedWithCurrentItem="True">
+        <ListBox Name="StarBoxs" Grid.Column="0" ItemsSource="{Binding Source={StaticResource StarView}}" DisplayMemberPath="Name" IsSynchronizedWithCurrentItem="True" SelectionChanged="StarBoxs_SelectionChanged">
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Add Star" Click="StarBoxs_AddStar_Click"/>
@@ -109,10 +109,11 @@
 
             <ListView Name="JI" DockPanel.Dock="Left" ItemsSource="{Binding Source={StaticResource StarView}, Path=Lanes}">
                 <ListView.Resources>
-                    <!--<DataTemplate x:Key="FirstCell">
-                        <TextBox Text="{Binding RelativeSource={RelativeSource AncestorType=FrameworkElement, AncestorLevel=1}, Mode=TwoWay, Path=DataContext.Endpoint2_Star.Name}"/>
-                        --><!--<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=SelectedItem.Endpoint2_Star.Name}"/>--><!--
-                    </DataTemplate>-->
+                    <DataTemplate x:Key="exp">
+                        <TextBlock>
+      
+                        </TextBlock>
+                    </DataTemplate>
                     <DataTemplate x:Key="Endpoint1_Cell">
                         <ComboBox SelectedValue="{Binding Mode=TwoWay, Path=Endpoint1_Star}" DisplayMemberPath="Name">
                             <ComboBox.ItemsSource>
@@ -142,7 +143,7 @@
                         <GridViewColumn Header="Endpoint1" DisplayMemberBinding="{Binding Path=Endpoint1_Star.Name}"/>
                         <GridViewColumn Header="Endpoint2" DisplayMemberBinding="{Binding Path=Endpoint2_Star.Name}"/>-->
                         <GridViewColumn Header="Lane Type" CellTemplate="{StaticResource LaneType_Cell}"/>
-                        <GridViewColumn Header="Endpoint1" CellTemplate="{StaticResource Endpoint1_Cell}"/>
+                        <!--<GridViewColumn Header="Endpoint1" CellTemplate="{StaticResource Endpoint1_Cell}"/>-->
                         <GridViewColumn Header="Endpoint2" CellTemplate="{StaticResource Endpoint2_Cell}"/>
                     </GridView>
                 </ListView.View>

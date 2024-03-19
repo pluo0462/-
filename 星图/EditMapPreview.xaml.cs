@@ -64,6 +64,16 @@ namespace 星图
             editLaneWindow.Show();
         }
 
+        private void StarBoxs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Star? selectedStar = StarBoxs.SelectedItem as Star;
+
+            if (selectedStar != null)
+            {
+                selectedStar.OrganizeLanes();
+            }
+        }
+
         //private void StarBoxs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{
         //    Star? selectedStar = StarBoxs.SelectedItem as Star;

@@ -103,6 +103,14 @@ namespace 星图
             StarType = starType;
         }
 
+        public void OrganizeLanes()
+        {
+            foreach (Lane l in  Lanes)
+            {
+                l.OrganizeEndpoint(this);
+            }
+        }
+
         #region INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string propertyName)
