@@ -49,7 +49,7 @@
         <local:PreviewMap x:Key="PM"/>
         <local:PreviewStar x:Key="PS"/>
         <local:StarCheck2_Converter x:Key="StarCheck"/>
-        <CollectionViewSource x:Key="StarView" Source="{Binding Path=Stars}"/>
+        <CollectionViewSource x:Key="StarView" Source="{Binding Path=Stars}" Filter="CollectionViewSource_Filter"/>
     </Window.Resources>
     <Window.DataContext>
         <Binding Source="{StaticResource PM}"/>
@@ -60,7 +60,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <ListBox Name="StarBoxs" Grid.Column="0" ItemsSource="{Binding Source={StaticResource StarView}}" DisplayMemberPath="Name" IsSynchronizedWithCurrentItem="True" SelectionChanged="StarBoxs_SelectionChanged">
+        <ListBox Name="StarBoxs" Grid.Column="0" ItemsSource="{Binding Path=Stars}" DisplayMemberPath="Name" IsSynchronizedWithCurrentItem="True" SelectionChanged="StarBoxs_SelectionChanged">
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Add Star" Click="StarBoxs_AddStar_Click"/>
@@ -96,39 +96,47 @@
                 </Grid.ColumnDefinitions>
 
                 <HeaderedContentControl Grid.Row="0" Grid.Column="0" Header="Name" Style="{StaticResource StarProperty_hc}">
-                    <TextBox x:Name="FIL"  Text="{Binding Source={StaticResource StarView}, Path=Name}"/>
+                    <TextBox x:Name="FIL"  Text="{Binding Path=Stars/Name}"/>
                 </HeaderedContentControl>
                 <HeaderedContentControl Grid.Row="1" Grid.Column="0" Header="类型" Style="{StaticResource StarProperty_hc}">
                     <!--<ComboBox Name="StarType_ComboBox" ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:StarType}}}" SelectionChanged="StarType_ComboBox_SelectionChanged" />-->
-                    <ComboBox Name="StarType_ComboBox" ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:StarType}}}" SelectedValue="{Binding Source={StaticResource StarView}, Path=StarType}" />
+                    <ComboBox Name="StarType_ComboBox" ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:StarType}}}" SelectedValue="{Binding Path=Stars/StarType}" />
                 </HeaderedContentControl>
                 <!--<HeaderedContentControl Grid.Row="1" Grid.Column="1" Header="类型" Style="{StaticResource StarProperty_hc}">
                     <TextBlock Name="Check" Text="{Binding Path=Stars/StarType}"/>
                 </HeaderedContentControl>-->
             </Grid>
 
-            <ListView Name="JI" DockPanel.Dock="Left" ItemsSource="{Binding Source={StaticResource StarView}, Path=Lanes}">
+            <ListView Name="LaneView" DockPanel.Dock="Left" ItemsSource="{Binding Path=Stars/Lanes}">
                 <ListView.Resources>
-                    <DataTemplate x:Key="exp">
-                        <TextBlock>
-      
-                        </TextBlock>
-                    </DataTemplate>
                     <DataTemplate x:Key="Endpoint1_Cell">
                         <ComboBox SelectedValue="{Binding Mode=TwoWay, Path=Endpoint1_Star}" DisplayMemberPath="Name">
-                            <ComboBox.ItemsSource>
+                            <!--<ComboBox.Resources>
+                                <CollectionViewSource x:Key="SelectableStars" Source="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.Stars}" Filter="CollectionViewSource_Filter"/>
+                            </ComboBox.Resources>-->
+                            <!--<ComboBox.ItemsSource>
                                 <CompositeCollection>
-                                    <CollectionContainer Collection="{Binding Source={StaticResource StarView}}"/>
+                                    <CollectionContainer Collection="{Binding Source={StaticResource SelectableStars}}"/>
                                 </CompositeCollection>
-                            </ComboBox.ItemsSource>
+                            </ComboBox.ItemsSource>-->
                         </ComboBox>
                     </DataTemplate>
                     <DataTemplate x:Key="Endpoint2_Cell">
                         <!--<ComboBox SelectedValue="{Binding RelativeSource={RelativeSource Mode=Self}, Mode=TwoWay, Path=DataContext.Endpoint2_Star}" DisplayMemberPath="Name">-->
+                        
                         <ComboBox SelectedValue="{Binding Mode=TwoWay, Path=Endpoint2_Star}" DisplayMemberPath="Name">
-                            <ComboBox.ItemsSource>
+                            <!--<ComboBox.ItemsSource>
                                 <CompositeCollection>
                                     <CollectionContainer Collection="{Binding Source={StaticResource StarView}}"/>
+                                </CompositeCollection>
+                            </ComboBox.ItemsSource>-->
+
+                            <ComboBox.Resources>
+                                <CollectionViewSource x:Key="SelectableStars" Source="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.Stars}" Filter="CollectionViewSource_Filter"/>
+                            </ComboBox.Resources>
+                            <ComboBox.ItemsSource>
+                                <CompositeCollection>
+                                    <CollectionContainer Collection="{Binding Source={StaticResource SelectableStars}}"/>
                                 </CompositeCollection>
                             </ComboBox.ItemsSource>
                         </ComboBox>
@@ -142,14 +150,15 @@
                         <!--<GridViewColumn Header="Type" DisplayMemberBinding="{Binding Path=Type}" />
                         <GridViewColumn Header="Endpoint1" DisplayMemberBinding="{Binding Path=Endpoint1_Star.Name}"/>
                         <GridViewColumn Header="Endpoint2" DisplayMemberBinding="{Binding Path=Endpoint2_Star.Name}"/>-->
-                        <GridViewColumn Header="Lane Type" CellTemplate="{StaticResource LaneType_Cell}"/>
+                        <GridViewColumn Width="150" Header="Lane Type" CellTemplate="{StaticResource LaneType_Cell}"/>
                         <!--<GridViewColumn Header="Endpoint1" CellTemplate="{StaticResource Endpoint1_Cell}"/>-->
-                        <GridViewColumn Header="Endpoint2" CellTemplate="{StaticResource Endpoint2_Cell}"/>
+                        <GridViewColumn Width="150" Header="Destination" CellTemplate="{StaticResource Endpoint2_Cell}"/>
                     </GridView>
                 </ListView.View>
                 <ListView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Add Lane" Click="AddLane_Click"/>
+                        <MenuItem Header="Remove Lane" Click="RemoveLane_Click"/>
                     </ContextMenu>
                 </ListView.ContextMenu>
             </ListView>
@@ -178,7 +187,7 @@
                 </ListView.View>
             </ListView>-->
 
-            <!--<TextBox x:Name="Validate" DockPanel.Dock="Right" Text="{Binding Path=Stars/Lanes[0].Type}"/>-->
+            <TextBox x:Name="Validate" DockPanel.Dock="Right" Text="{Binding Path=Stars/Description}"/>
         </DockPanel>
     </Grid>
 </Window>

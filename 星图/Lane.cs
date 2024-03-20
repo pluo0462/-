@@ -17,8 +17,8 @@ namespace 星图
         private int _difficulty;
         private string _endpoint1_name = string.Empty;
         private string _endpoint2_name = string.Empty;
-        private Star _endpoint1_star;
-        private Star _endpoint2_star;
+        private Star? _endpoint1_star = null;
+        private Star? _endpoint2_star = null;
         private bool _explored;
         #endregion
 
@@ -42,10 +42,10 @@ namespace 星图
         [DataMember]
         public int Difficulty
         {
-            get 
-            { 
-                return _difficulty; 
-            } 
+            get
+            {
+                return _difficulty;
+            }
             set
             {
                 if (_difficulty != value)
@@ -106,7 +106,7 @@ namespace 星图
             }
         }
 
-        public Star Endpoint1_Star
+        public Star? Endpoint1_Star
         {
             get
             {
@@ -114,22 +114,16 @@ namespace 星图
             }
             set
             {
-                //if (_endpoint1_star != value)
-                //{
-                //    _endpoint1_star = value;
-                //    OnPropertyChanged(nameof(Endpoint1_Star));
-                //}
-
                 if (value == null) { }
                 else if (_endpoint1_star == null)
                 {
                     _endpoint1_star = value;
+                    _endpoint1_star.Lanes.Add(this);
+
                     OnPropertyChanged(nameof(Endpoint1_Star));
                 }
-                else if (_endpoint1_star != value /*&& Endpoint2_Star != value*/)
+                else if (_endpoint1_star != value)
                 {
-                    Console.WriteLine("Lane Endpoint1_Star Change");
-
                     Star previousEnd = _endpoint1_star;
                     Star newEnd = value;
 
@@ -142,7 +136,7 @@ namespace 星图
             }
         }
 
-        public Star Endpoint2_Star
+        public Star? Endpoint2_Star
         {
             get
             {
@@ -150,22 +144,16 @@ namespace 星图
             }
             set
             {
-                //if (_endpoint2_star != value)
-                //{
-                //    _endpoint2_star = value;
-                //    OnPropertyChanged(nameof(Endpoint2_Star));
-                //}
-
                 if (value == null) { }
                 else if (_endpoint2_star == null)
                 {
                     _endpoint2_star = value;
+                    _endpoint2_star.Lanes.Add(this);
+
                     OnPropertyChanged(nameof(Endpoint2_Star));
                 }
                 else if (_endpoint2_star != value /*&& Endpoint1_Star != value*/)
                 {
-                    Console.WriteLine("Lane Endpoint2_Star Change");
-
                     Star previousEnd = _endpoint2_star;
                     Star newEnd = value;
 
@@ -176,6 +164,13 @@ namespace 星图
                     OnPropertyChanged(nameof(Endpoint2_Star));
                 }
             }
+        }
+
+        public Lane(Star originStar)
+        {
+            RandomLane();
+            _endpoint1_star = originStar;
+            _endpoint1_star.Lanes.Add(this);
         }
 
         public Lane(Star endpoint1_star, Star endpoint2_star)
