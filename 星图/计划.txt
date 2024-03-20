@@ -2,13 +2,10 @@
 
 V1：
 	完成星图生成，恒星系只需要名字和类型两个属性。
-	要求星图可以存储，即serialization。
 	要求面板可以实现航道修改。
-
+	要求实现Serielization(未完成)
 
 类
-	Map:
-		
 	Star:
 		提供恒星系的实现。目前只需要三个属性，分别是：
 		1. 名字（Name）
@@ -37,3 +34,5 @@ V1：
 		因为无力实现ComboBox的itemsource和selection分离，这部分转由event实现。
 			推翻，实际上很简单。现在由Data Binding实现。
 
+V1.1:
+	修改EditMap Window，使之更美观。
