@@ -103,10 +103,10 @@
                 </HeaderedContentControl>
             </Grid>
 
-            <ListView Name="LaneView" DockPanel.Dock="Left" ItemsSource="{Binding Path=Stars/Lanes}" Width="242">
+            <ListView Name="LaneView" DockPanel.Dock="Left" ItemsSource="{Binding Path=Stars/Lanes}" Width="242" Style="{StaticResource EXP_LaneViewStyle}">
                 <ListView.Resources>
                     <DataTemplate x:Key="Endpoint2_Cell">
-                        <ComboBox SelectedValue="{Binding Mode=TwoWay, Path=Endpoint2_Star}" DisplayMemberPath="Name">
+                        <ComboBox SelectedValue="{Binding Mode=TwoWay, Path=Endpoint2_Star}" DisplayMemberPath="Name" Style="{StaticResource EXP_LaneViewComboBoxStyle}">
                             <ComboBox.Resources>
                                 <CollectionViewSource x:Key="SelectableStars" Source="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.Stars}" Filter="CollectionViewSource_Filter"/>
                             </ComboBox.Resources>
@@ -118,14 +118,14 @@
                         </ComboBox>
                     </DataTemplate>
                     <DataTemplate x:Key="LaneType_Cell">
-                        <ComboBox ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:LaneType}}}" SelectedValue="{Binding Mode=TwoWay, Path=Type}" />
+                        <ComboBox ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:LaneType}}}" SelectedValue="{Binding Mode=TwoWay, Path=Type}" Style="{StaticResource EXP_LaneViewComboBoxStyle}"/>
                     </DataTemplate>
                     <DataTemplate x:Key="Text_Cell">
                         <TextBox Text="Hi" Height="21"/>
                     </DataTemplate>
                 </ListView.Resources>
                 <ListView.View>
-                    <GridView>
+                    <GridView ColumnHeaderContainerStyle="{StaticResource EXP_LaneViewHeaderContainerStyle}" AllowsColumnReorder="False">
                         <GridViewColumn Header="Lane Type" CellTemplate="{StaticResource LaneType_Cell}"/>
                         <GridViewColumn Header="Destination" CellTemplate="{StaticResource Endpoint2_Cell}"/>
                         <!--<GridViewColumn Header="HHH" CellTemplate="{StaticResource Text_Cell}"/>-->
