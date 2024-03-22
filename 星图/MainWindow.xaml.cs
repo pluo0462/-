@@ -333,11 +333,6 @@ namespace 星图
         
         private void StarButton_Click(object sender, EventArgs e)
         {
-            var win = new StarWindow
-            {
-                DataContext = (sender as Button).DataContext
-            };
-            win.ShowDialog();
         }
 
     }

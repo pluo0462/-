@@ -71,10 +71,19 @@ namespace 星图
             }
         }
 
-        public ObservableCollection<Lane> Lanes { get; } = [];
+        public ObservableCollection<Lane> Lanes { get; set; } = [];
         
         // The Coordinate property should be used in map drawing only!
         public System.Windows.Point Coordinate { get; set; }
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// 用于图论算法的property。禁止用于其他目的

@@ -44,6 +44,7 @@ namespace 星图
             MapName_textb.Text = "New Map (Not Saved Yet)";
 
             EditMap_btn.IsEnabled = true;
+            SaveMap_btn.IsEnabled = true;
         }
 
         private void CreateInteractiveMap_btn_Click(object sender, RoutedEventArgs e)
@@ -75,7 +76,13 @@ namespace 星图
                 {
                     MapName_textb.Text = dialog.FileName;
                     EditMap_btn.IsEnabled = true;
-                    //DisplayMap_btn.IsEnabled = true;
+
+                    map.StarDict = new Dictionary<string, Star>();
+                    foreach (Star s in map.Stars)
+                    {
+                        s.Lanes = new System.Collections.ObjectModel.ObservableCollection<Lane>();
+                        map.StarDict[s.Name] = s;
+                    }
 
                     foreach (Lane l in map.Lanes)
                     {
@@ -93,6 +100,13 @@ namespace 星图
 
         private void SaveMap_btn_Click(object sender, RoutedEventArgs e)
         {
+            /// Pre-Save Process
+            foreach (Lane l in map.Lanes)
+            {
+                l.Endpoint1_Name = l.Endpoint1_Star.Name;
+                l.Endpoint2_Name = l.Endpoint2_Star.Name;
+            }
+            /// Save Process
             var dialog = new Microsoft.Win32.SaveFileDialog();
             dialog.DefaultExt = ".xml";
             dialog.Filter = "Map XML (.xml)|*.xml";

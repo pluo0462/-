@@ -78,11 +78,11 @@ namespace 星图
         #endregion
 
         [DataMember]
-        public ObservableCollection<Star> Stars { get; } = [];
+        public ObservableCollection<Star> Stars { get; set; } = [];
         [DataMember]
-        public ObservableCollection<Lane> Lanes { get; } = [];
+        public ObservableCollection<Lane> Lanes { get; set; } = [];
 
-        internal Dictionary<string, Star> StarDict { get; } = [];
+        internal Dictionary<string, Star> StarDict { get; set; } = [];
 
         internal void AddStar(Star star)
         {

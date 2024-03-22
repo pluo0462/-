@@ -20,7 +20,6 @@
                 </Style>
             </StackPanel.Resources>
             <TextBlock x:Name="MapName_textb" Margin="10" HorizontalAlignment="Center" Text="No Map Yet"/>
-            <!--<TextBlock x:Name="MapSave_textb" Margin="10" HorizontalAlignment="Center"/>-->
             <Button x:Name="CreateMap_btn" Click="CreateMap_btn_Click">Create Map</Button>
             <Button x:Name="LoadMap_btn" Click="LoadMap_btn_Click">Load Map</Button>
             <Button x:Name="EditMap_btn"  Click="EditMap_btn_Click" IsEnabled="False">Edit Map</Button>

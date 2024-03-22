@@ -7,70 +7,102 @@
         mc:Ignorable="d"
         Title="EditMap" Height="450" Width="800">
     <Window.Resources>
-        <ControlTemplate x:Key="StarProperty_hcc_ct" TargetType="HeaderedContentControl">
-            <DockPanel>
-                <ContentPresenter ContentSource="Header" DockPanel.Dock="Left" 
-                                              Focusable="False" VerticalAlignment="Center"/>
-                <ContentPresenter ContentSource="Content" DockPanel.Dock="Right" 
-                                               VerticalAlignment="Center"/>
-            </DockPanel>
-        </ControlTemplate>
-        <Style x:Key="StarProperty_hc" TargetType="HeaderedContentControl">
-            <Setter Property="BorderBrush" Value="Black"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="Template" Value="{StaticResource StarProperty_hcc_ct}"/>
-        </Style>
+        <local:PreviewMap x:Key="PM"/>
+        <local:PreviewStar x:Key="PS"/>
+        <local:StarCheck2_Converter x:Key="StarCheck"/>
+        <CollectionViewSource x:Key="StarView" Source="{Binding Path=Stars}" Filter="CollectionViewSource_Filter"/>
     </Window.Resources>
-    <Grid>
+    <Window.DataContext>
+        <Binding Source="{StaticResource PM}"/>
+    </Window.DataContext>
+    <Grid x:Name="MainWindow">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="600"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="Stars_lb" Grid.Column="0" BorderBrush="Black" ItemsSource="{Binding Path=Stars}"/>
-        <StackPanel Grid.Column="1">
-            <!--<StackPanel.Resources>
-                <Style TargetType="HeaderedContentControl">
-                    <Setter Property="BorderBrush" Value="Black"/>
-                    <Setter Property="BorderThickness" Value="2"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                        <ControlTemplate TargetType="HeaderedContentControl">
-                            <DockPanel>
-                                <ContentPresenter ContentSource="Header" DockPanel.Dock="Left" 
-                                              Focusable="False" VerticalAlignment="Center"/>
-                                <ContentPresenter ContentSource="Content" DockPanel.Dock="Right" 
-                                               VerticalAlignment="Center"/>
-                            </DockPanel>
-                        </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </StackPanel.Resources>-->
-            <HeaderedContentControl Style="{StaticResource StarProperty_hc}" MinHeight="10" Header="Name">
-                <!--<HeaderedContentControl.Template>
-                    <ControlTemplate TargetType="HeaderedContentControl">
+
+        <ListBox Name="StarBoxs" Grid.Column="0" ItemsSource="{Binding Path=Stars}" DisplayMemberPath="Name" IsSynchronizedWithCurrentItem="True" SelectionChanged="StarBoxs_SelectionChanged">
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add Star" Click="StarBoxs_AddStar_Click"/>
+                    <MenuItem Header="Remove Star" Click="StarBoxs_RemoveStar_Click"/>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+
+        <DockPanel x:Name="StarDock" Grid.Column="1">
+            <Grid Height="100" DockPanel.Dock="Top">
+                <Grid.Resources>
+                    <ControlTemplate x:Key="StarProperty_hcc_ct" TargetType="HeaderedContentControl">
                         <DockPanel>
-                            <ContentPresenter ContentSource="Header" DockPanel.Dock="Left" 
-                                              Focusable="False" VerticalAlignment="Center"/>
-                            <ContentPresenter ContentSource="Content" DockPanel.Dock="Right" 
-                                               VerticalAlignment="Center"/>
+                            <ContentPresenter ContentSource="Header" DockPanel.Dock="Left" Focusable="False" Width="40" VerticalAlignment="Center"/>
+                            <ContentPresenter ContentSource="Content" DockPanel.Dock="Right" Margin="10,0,0,0" VerticalAlignment="Center"/>
                         </DockPanel>
                     </ControlTemplate>
-                </HeaderedContentControl.Template>-->
-                <TextBox MinWidth="100" MinHeight="100" Text="{Binding Path=Name, Mode=TwoWay}"/>
-            </HeaderedContentControl>
-            <HeaderedContentControl MinHeight="10" Header="Star Type">
-            </HeaderedContentControl>
-            <HeaderedContentControl>
-                <HeaderedContentControl.Header>
-                    <TextBlock>
-                        Description
-                    </TextBlock>
-                </HeaderedContentControl.Header>
-                <TextBox MinHeight="100" Text="{Binding Path=Description, Mode=TwoWay}"/>
-            </HeaderedContentControl>
-            <TextBlock Text="Neighbor"/>
-            <ListView MinHeight="100" Margin="5,5,5,5" ItemsSource="{Binding Path=Neighbors, Mode=TwoWay}"/>
-        </StackPanel>
+                    <Style x:Key="StarProperty_hc" TargetType="HeaderedContentControl">
+                        <Setter Property="BorderBrush" Value="Black"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="Margin" Value="10"/>
+                        <Setter Property="Template" Value="{StaticResource StarProperty_hcc_ct}"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <HeaderedContentControl Grid.Row="0" Grid.Column="0" Header="Name" Style="{StaticResource StarProperty_hc}">
+                    <TextBox x:Name="FIL"  Text="{Binding Path=Stars/Name}"/>
+                </HeaderedContentControl>
+                <HeaderedContentControl Grid.Row="1" Grid.Column="0" Header="类型" Style="{StaticResource StarProperty_hc}">
+                    <ComboBox Name="StarType_ComboBox" ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:StarType}}}" SelectedValue="{Binding Path=Stars/StarType}" />
+                </HeaderedContentControl>
+
+                <Button x:Name="DisplayMapBtn" Grid.Row="0" Grid.Column="1" Width="100" Height="20" Content="Display Map" Click="DisplayMapBtn_Click"/>
+            </Grid>
+
+            <ListView Name="LaneView" DockPanel.Dock="Left" ItemsSource="{Binding Path=Stars/Lanes}" Style="{StaticResource LaneViewStyle}" ItemContainerStyle="{StaticResource LaneViewItemStyle}">
+                <ListView.Resources>
+                    <DataTemplate x:Key="Endpoint2_Cell">
+                        <ComboBox SelectedValue="{Binding Mode=TwoWay, Path=Endpoint2_Star}" DisplayMemberPath="Name" Style="{StaticResource LaneViewComboBox}">
+                            <ComboBox.Resources>
+                                <CollectionViewSource x:Key="SelectableStars" Source="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.Stars}" Filter="CollectionViewSource_Filter"/>
+                            </ComboBox.Resources>
+                            <ComboBox.ItemsSource>
+                                <CompositeCollection>
+                                    <CollectionContainer Collection="{Binding Source={StaticResource SelectableStars}}"/>
+                                </CompositeCollection>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
+                    </DataTemplate>
+                    <DataTemplate x:Key="LaneType_Cell">
+                        <ComboBox ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:LaneType}}}" SelectedValue="{Binding Mode=TwoWay, Path=Type}" Style="{StaticResource LaneViewComboBox}"/>
+                    </DataTemplate>
+                    <DataTemplate x:Key="Text_Cell">
+                        <TextBox Text="Hi" Height="21"/>
+                    </DataTemplate>
+                </ListView.Resources>
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False" ColumnHeaderContainerStyle="{StaticResource LaneViewGridViewColumnHeaderStyle}" >
+                        <GridViewColumn Header="Lane Type" CellTemplate="{StaticResource LaneType_Cell}"/>
+                        <GridViewColumn Header="Destination" CellTemplate="{StaticResource Endpoint2_Cell}"/>
+                        <!--<GridViewColumn Header="HHH" CellTemplate="{StaticResource Text_Cell}"/>-->
+                    </GridView>
+                </ListView.View>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add Lane" Click="AddLane_Click"/>
+                        <MenuItem Header="Remove Lane" Click="RemoveLane_Click"/>
+                    </ContextMenu>
+                </ListView.ContextMenu>
+            </ListView>
+
+            <TextBox x:Name="Validate" DockPanel.Dock="Right" Text="{Binding Path=Stars/Description}"/>
+        </DockPanel>
     </Grid>
 </Window>

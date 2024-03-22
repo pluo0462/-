@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace 星图
 {
     /// <summary>
-    /// StarWindow.xaml 的交互逻辑
+    /// DisplayedMap.xaml 的交互逻辑
     /// </summary>
-    public partial class StarWindow : Window
+    public partial class DisplayedMap : Window
     {
-        public StarWindow()
+        public DisplayedMap()
         {
             InitializeComponent();
         }
