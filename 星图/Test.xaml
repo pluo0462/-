@@ -9,13 +9,13 @@
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="12"/>
-            <RowDefinition Height="28"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="18"/>
         </Grid.RowDefinitions>
         <Grid.Background>
             <SolidColorBrush Opacity="0"/>
         </Grid.Background>
         <Image Source="src/BlackHole.png" Grid.Row="1"/>
-        <TextBlock Grid.Row="2" FontSize="6" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center">Platinum Home Abyss</TextBlock>
+        <TextBlock Grid.Row="2" FontSize="8" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center">No.10 光辉之路</TextBlock>
     </Grid>
 </Window>

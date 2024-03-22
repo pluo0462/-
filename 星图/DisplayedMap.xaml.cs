@@ -208,13 +208,29 @@ namespace 星图
             {
                 map.Clean();
 
+                // Process RootStar
+                rootStar.Visited = true;
+                Button starButton = new Button();
+                starButton.Style = DisplayedMapCanvas.TryFindResource($"StarButton") as Style;
+                Image starImage = new();
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri(@$"/src/{rootStar.StarType}.png", UriKind.Relative);
+                bitmapImage.EndInit();
+                starImage.Source = bitmapImage;
+                starButton.Content = starImage;
+                starButton.DataContext = rootStar;
+
+                Canvas.SetLeft(starButton, rootStar.Coordinate.X - starButton.Width / 2);
+                Canvas.SetTop(starButton, rootStar.Coordinate.Y - starButton.Height / 2);
+                DisplayedMapCanvas.Children.Add(starButton);
+
                 List<Star> parentFloor = [rootStar];
-                while (parentFloor.Count > 0)
+                for (int i = 0; i < maxMapDepth && parentFloor.Count > 0; i++)
                 {
                     List<Star> childFloor = [];
                     foreach (Star parent in parentFloor)
                     {
-                        parent.Visited = true;
                         foreach (Lane l in parent.Lanes)
                         {
                             l.OrganizeEndpoint(parent);
@@ -222,6 +238,7 @@ namespace 星图
 
                             if (!child.Visited)
                             {
+                                child.Visited = true;
                                 childFloor.Add(child);
 
                                 Line line = new Line();
@@ -232,24 +249,24 @@ namespace 星图
 
                                 line.Style = DisplayedMapCanvas.TryFindResource($"{l.Type}") as Style;
                                 DisplayedMapCanvas.Children.Add(line);
+
+                                starButton = new Button();
+
+                                starButton.Style = DisplayedMapCanvas.TryFindResource($"StarButton") as Style;
+                                starImage = new();
+                                bitmapImage = new BitmapImage();
+                                bitmapImage.BeginInit();
+                                bitmapImage.UriSource = new Uri(@$"/src/{child.StarType}.png", UriKind.Relative);
+                                bitmapImage.EndInit();
+                                starImage.Source = bitmapImage;
+                                starButton.Content = starImage;
+                                starButton.DataContext = child;
+
+                                Canvas.SetLeft(starButton, child.Coordinate.X - starButton.Width / 2);
+                                Canvas.SetTop(starButton, child.Coordinate.Y - starButton.Height / 2);
+                                DisplayedMapCanvas.Children.Add(starButton);
                             }
                         }
-
-                        Button starButton = new Button();
-
-                        starButton.Style = DisplayedMapCanvas.TryFindResource($"StarButton") as Style;
-                        Image starImage = new();
-                        BitmapImage bitmapImage = new BitmapImage();
-                        bitmapImage.BeginInit();
-                        bitmapImage.UriSource = new Uri(@$"/src/{parent.StarType}.png", UriKind.Relative);
-                        bitmapImage.EndInit();
-                        starImage.Source = bitmapImage;
-                        starButton.Content = starImage;
-                        starButton.DataContext = parent;
-
-                        Canvas.SetLeft(starButton, parent.Coordinate.X - starButton.Width / 2);
-                        Canvas.SetTop(starButton, parent.Coordinate.Y - starButton.Height / 2);
-                        DisplayedMapCanvas.Children.Add(starButton);
                     }
                     parentFloor = childFloor;
                 }

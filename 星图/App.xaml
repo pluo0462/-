@@ -571,15 +571,15 @@
                     <ControlTemplate TargetType="Button">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="12"/>
-                                <RowDefinition Height="36"/>
-                                <RowDefinition Height="12"/>
+                                <RowDefinition Height="18"/>
+                                <RowDefinition Height="24"/>
+                                <RowDefinition Height="18"/>
                             </Grid.RowDefinitions>
                             <Grid.Background>
                                 <SolidColorBrush Opacity="0"/>
                             </Grid.Background>
                             <ContentPresenter Grid.Row="1"/>
-                            <TextBlock Grid.Row="2" FontSize="10" Foreground="white" FontWeight="Bold" Text="{Binding Path=Name}"/>
+                            <TextBlock Grid.Row="2" FontSize="8" Width="36" Foreground="white" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Path=Name}"/>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
