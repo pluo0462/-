@@ -86,7 +86,10 @@ namespace 星图
 
         private void DisplayMapBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            //MessageBox.Show(DataContext.ToString());
+            //MessageBox.Show((StarBoxs.SelectedItem as Star).Name);
+            DisplayedMap displayedMap = new DisplayedMap() { DataContext = this.DataContext, rootStar = StarBoxs.SelectedItem as Star };
+            displayedMap.Show();
         }
     }
 }

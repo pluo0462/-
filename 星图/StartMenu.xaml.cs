@@ -76,6 +76,7 @@ namespace 星图
                 {
                     MapName_textb.Text = dialog.FileName;
                     EditMap_btn.IsEnabled = true;
+                    SaveMap_btn.IsEnabled = true;
 
                     map.StarDict = new Dictionary<string, Star>();
                     foreach (Star s in map.Stars)
